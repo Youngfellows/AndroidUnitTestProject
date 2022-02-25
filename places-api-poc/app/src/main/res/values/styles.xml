@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright 2018 Nazmul Idris. All rights reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents">
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
+        <item name="android:textColorLink">@color/textColorLink</item>
+
+        <!-- Override the default Snackbar style -->
+        <item name="snackbarStyle">@style/AppSnackbarStyle</item>
+
+        <!-- Override the default BottomSheetDialog theme to dark -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogStyle</item>
+
+
+    </style>
+
+    <style name="AppSnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppBottomSheetDialogStyle" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <!-- Base.V7.Theme.AppCompat.Dialog defines a style with item "android:colorBackground"
+        that has to be updated to match the current theme-->
+        <item name="android:colorBackground">@color/colorPrimary</item>
+    </style>
+
+</resources>
