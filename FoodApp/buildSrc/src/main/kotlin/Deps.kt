@@ -4,7 +4,7 @@ object Deps {
 
     // kotlin
     private const val kotlinVersion = "1.4.20"
-    private const val coroutinesVersion = "1.3.5"
+    private const val coroutinesVersion = "1.3.6"
 
     // AndroidX
     private const val coreVersion = "1.3.0"
