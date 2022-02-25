@@ -16,6 +16,7 @@
 package com.wajahatkarim3.imagine.utils
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -23,6 +24,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
+
+object TheKtx {
+    val TAG: String = this.javaClass.simpleName
+}
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -64,5 +69,6 @@ fun EditText.dismissKeyboard() {
  */
 fun isNight(): Boolean {
     val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    Log.d(TheKtx.TAG, "isNight: currentHour=$currentHour")
     return (currentHour <= 7 || currentHour >= 18)
 }
