@@ -34,19 +34,38 @@ class HomeViewModel @Inject constructor(
     private val searchPhotosUsecase: SearchPhotosUsecase
 ) : ViewModel() {
 
+    /**
+     * 主页UI状态变化
+     */
     private var _uiState = MutableLiveData<HomeUiState>()
     var uiStateLiveData: LiveData<HomeUiState> = _uiState
 
+    /**
+     * 图片数据变化
+     */
     private var _photosList = MutableLiveData<List<PhotoModel>>()
     var photosListLiveData: LiveData<List<PhotoModel>> = _photosList
 
+    /**
+     * 分页
+     */
     private var pageNumber = 1
+
+    /**
+     * 收缩关键字
+     */
     private var searchQuery: String = ""
 
+    /**
+     * 构造初始化
+     */
     init {
         fetchPhotos(pageNumber)
     }
 
+    /**
+     * 加载更多
+     */
     fun loadMorePhotos() {
         pageNumber++
         if (searchQuery == "")
@@ -55,6 +74,9 @@ class HomeViewModel @Inject constructor(
             searchPhotos(searchQuery, pageNumber)
     }
 
+    /**
+     * 重新加载
+     */
     fun retry() {
         if (searchQuery == "")
             fetchPhotos(pageNumber)
@@ -62,12 +84,20 @@ class HomeViewModel @Inject constructor(
             searchPhotos(searchQuery, pageNumber)
     }
 
+    /**
+     * 搜索图片
+     * @param query 关键字
+     */
     fun searchPhotos(query: String) {
         searchQuery = query
         pageNumber = 1
         searchPhotos(query, pageNumber)
     }
 
+    /**
+     * 获取图片
+     * @param page 第x页
+     */
     fun fetchPhotos(page: Int) {
         _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
         viewModelScope.launch {
@@ -82,7 +112,9 @@ class HomeViewModel @Inject constructor(
                             // Any other page
                             _uiState.postValue(ContentNextPageState)
                             var currentList = arrayListOf<PhotoModel>()
+                            //拷贝旧数据
                             _photosList.value?.let { currentList.addAll(it) }
+                            //更新新数据
                             currentList.addAll(dataState.data)
                             _photosList.postValue(currentList)
                         }
@@ -100,6 +132,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * 关键字搜索图片
+     * @param query 关键字
+     * @param page 第x页
+     */
     private fun searchPhotos(query: String, page: Int) {
         _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
         viewModelScope.launch {

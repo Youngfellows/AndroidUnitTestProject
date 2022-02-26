@@ -25,6 +25,29 @@ import kotlinx.coroutines.flow.Flow
  * @author Wajahat Karim
  */
 interface ImagineRepository {
-    suspend fun loadPhotos(pageNumber: Int, pageSize: Int, orderBy: String): Flow<DataState<List<PhotoModel>>>
-    suspend fun searchPhotos(query: String, pageNumber: Int, pageSize: Int): Flow<DataState<List<PhotoModel>>>
+    /**
+     * 加载图片
+     * @param pageNumber
+     * @param pageSize
+     * @param orderBy
+     * @return
+     */
+    suspend fun loadPhotos(
+        pageNumber: Int,
+        pageSize: Int,
+        orderBy: String
+    ): Flow<DataState<List<PhotoModel>>>
+
+    /**
+     * 关键字搜索
+     * @param query
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    suspend fun searchPhotos(
+        query: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<DataState<List<PhotoModel>>>
 }

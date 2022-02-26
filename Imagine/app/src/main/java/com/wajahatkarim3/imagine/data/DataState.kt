@@ -16,15 +16,40 @@
 package com.wajahatkarim3.imagine.data
 
 /**
+ * 封装成功与失败的数据集
  * A Sealed class to fetch data from server which will be either data or the error.
  * @author Wajahat Karim
  */
 sealed class DataState<T> {
+    /**
+     * 请求成功
+     * @param T 泛型
+     * @property data 泛型数据
+     */
     data class Success<T>(val data: T) : DataState<T>()
+
+    /**
+     * 请求失败
+     * @param T 泛型
+     * @property data 泛型数据
+     */
     data class Error<T>(val message: String) : DataState<T>()
 
     companion object {
+        /**
+         * 封装成功的数据集
+         * @param T 泛型
+         * @param data 泛型数据
+         * @return
+         */
         fun <T> success(data: T) = Success<T>(data)
+
+        /**
+         * 封装失败的数据集
+         * @param T 泛型
+         * @param data 泛型数据
+         * @return
+         */
         fun <T> error(message: String) = Error<T>(message)
     }
 }

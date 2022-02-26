@@ -23,10 +23,24 @@ import com.wajahatkarim3.imagine.R
 import com.wajahatkarim3.imagine.databinding.PhotoItemLayoutBinding
 import com.wajahatkarim3.imagine.model.PhotoModel
 
-class PhotosAdapter(val onPhotoSelected: (photo: PhotoModel, position: Int) -> Unit) : RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
+/**
+ *
+ * @property onPhotoSelected 函数类型,点击回调
+ */
+class PhotosAdapter(val onPhotoSelected: (photo: PhotoModel, position: Int) -> Unit) :
+    RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
 
+    /**
+     * 数据集
+     */
     private val photoItems: ArrayList<PhotoModel> = arrayListOf()
 
+    /**
+     * 创建ViewHolder并与视图绑定
+     * @param parent
+     * @param viewType
+     * @return
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         var binding = PhotoItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -36,6 +50,11 @@ class PhotosAdapter(val onPhotoSelected: (photo: PhotoModel, position: Int) -> U
         return PhotoViewHolder(binding)
     }
 
+    /**
+     * 为视图绑定数据
+     * @param holder
+     * @param position
+     */
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         holder.bind(photoItems[position], position)
     }
@@ -48,8 +67,14 @@ class PhotosAdapter(val onPhotoSelected: (photo: PhotoModel, position: Int) -> U
         notifyDataSetChanged()
     }
 
-    inner class PhotoViewHolder(val itemBinding: PhotoItemLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class PhotoViewHolder(val itemBinding: PhotoItemLayoutBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
 
+        /**
+         * 为视图绑定数据
+         * @param photoModel item数据
+         * @param position 位置
+         */
         fun bind(photoModel: PhotoModel, position: Int) {
             itemBinding.apply {
                 imgPhoto.load(photoModel.urls.thumb) {

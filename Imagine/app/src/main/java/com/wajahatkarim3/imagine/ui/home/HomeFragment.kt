@@ -45,12 +45,25 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
+    /**
+     * 通过函数类型为视图绑定ViewBinding
+     */
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> HomeFragmentBinding
         get() = HomeFragmentBinding::inflate
 
+    /**
+     * 获取数据
+     */
     private val viewModel: HomeViewModel by viewModels()
 
+    /**
+     * 搜索标签适配器
+     */
     lateinit var tagsAdapter: TagsAdapter
+
+    /**
+     * 图片适配器
+     */
     lateinit var photosAdapter: PhotosAdapter
 
     var snackbar: Snackbar? = null
@@ -80,14 +93,20 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
             // Photos RecyclerView
             photosAdapter = PhotosAdapter() { photo, _ ->
                 var bundle = bundleOf("photo" to photo)
-                findNavController().navigate(R.id.action_homeFragment_to_photoDetailsFragment, bundle)
+                //页面跳转
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_photoDetailsFragment,
+                    bundle
+                )
             }
-            photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            photosAdapter.stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             bi.recyclerPopularPhotos.adapter = photosAdapter
 
             // NestedScrollView
             bi.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                    //加载更多
                     viewModel.loadMorePhotos()
                 }
             }
@@ -101,7 +120,9 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
             bi.txtSearchPhotos.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //隐藏输入法
                     bi.txtSearchPhotos.dismissKeyboard()
+                    //执行搜索
                     performSearch(bi.txtSearchPhotos.text.toString())
                     true
                 }
@@ -110,6 +131,10 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
         }
     }
 
+    /**
+     * 关键字搜索图片
+     * @param query 关键字
+     */
     private fun performSearch(query: String) {
         bi.txtSearchPhotos.setText(query)
         bi.lblPopular.setText(getString(R.string.message_search_results_for_str, query))
@@ -117,6 +142,9 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
     }
 
     fun initObservations() {
+        /**
+         * 观察ui状态变化
+         */
         viewModel.uiStateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoadingState -> {
@@ -136,19 +164,26 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
                 is ErrorState -> {
                     bi.progressPhotos.gone()
-                    bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                    bi.nestedScrollView.showSnack(
+                        state.message,
+                        getString(R.string.action_retry_str)
+                    ) {
                         viewModel.retry()
                     }
                 }
 
                 is ErrorNextPageState -> {
-                    bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                    bi.nestedScrollView.showSnack(
+                        state.message,
+                        getString(R.string.action_retry_str)
+                    ) {
                         viewModel.retry()
                     }
                 }
             }
         }
 
+        //观察图片列表数据变化
         viewModel.photosListLiveData.observe(viewLifecycleOwner) { photos ->
             photosAdapter.updateItems(photos)
         }

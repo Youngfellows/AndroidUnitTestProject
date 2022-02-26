@@ -22,6 +22,13 @@ import retrofit2.http.Query
 
 interface UnsplashApiService {
 
+    /**
+     * 查询图片
+     * @param page
+     * @param numOfPhotos
+     * @param orderBy
+     * @return
+     */
     @GET("photos")
     suspend fun loadPhotos(
         @Query("page") page: Int = 1,
@@ -29,6 +36,13 @@ interface UnsplashApiService {
         @Query("order_by") orderBy: String = "popular"
     ): ApiResponse<List<PhotoModel>>
 
+    /**
+     * 关键字搜索
+     * @param query
+     * @param page
+     * @param numOfPhotos
+     * @return
+     */
     @GET("search/photos")
     suspend fun searchPhotos(
         @Query("query") query: String,

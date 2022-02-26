@@ -48,17 +48,20 @@ class ImagineRepositoryImpl @Inject constructor(
             apiService.loadPhotos(pageNumber, pageSize, orderBy).apply {
                 this.onSuccessSuspend {
                     data?.let {
+                        //发送成功数据
                         emit(DataState.success(it))
                     }
                 }
                 // handle the case when the API request gets an error response.
                 // e.g. internal server error.
             }.onErrorSuspend {
+                //发送失败数据
                 emit(DataState.error<List<PhotoModel>>(message()))
 
                 // handle the case when the API request gets an exception response.
                 // e.g. network connection error.
             }.onExceptionSuspend {
+                //发送失败数据
                 if (this.exception is IOException) {
                     emit(DataState.error<List<PhotoModel>>(stringUtils.noNetworkErrorMessage()))
                 } else {

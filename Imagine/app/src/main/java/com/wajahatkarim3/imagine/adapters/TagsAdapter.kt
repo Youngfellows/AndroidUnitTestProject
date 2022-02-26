@@ -23,10 +23,21 @@ import com.wajahatkarim3.imagine.R
 import com.wajahatkarim3.imagine.databinding.TagItemLayoutBinding
 import com.wajahatkarim3.imagine.model.TagModel
 
-class TagsAdapter(val onTagSelected: (tag: TagModel, position: Int) -> Unit) : RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
+/**
+ *
+ * @property onTagSelected 函数类型,回调函数
+ */
+class TagsAdapter(val onTagSelected: (tag: TagModel, position: Int) -> Unit) :
+    RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
 
+    /**
+     * 数据集
+     */
     private val tagItems: ArrayList<TagModel> = arrayListOf()
 
+    /**
+     * 创建ViewHolder与视图关联
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         var binding = TagItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -36,20 +47,30 @@ class TagsAdapter(val onTagSelected: (tag: TagModel, position: Int) -> Unit) : R
         return TagViewHolder(binding)
     }
 
+    /**
+     * 为视图绑定数据
+     */
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         holder.bind(tagItems[position], position)
     }
 
     override fun getItemCount() = tagItems.size
 
+    /**
+     * 更新数据集
+     */
     fun updateItems(tagsList: List<TagModel>) {
         tagItems.clear()
         tagItems.addAll(tagsList)
         notifyDataSetChanged()
     }
 
-    inner class TagViewHolder(val itemBinding: TagItemLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class TagViewHolder(val itemBinding: TagItemLayoutBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
 
+        /**
+         * 为view绑定数据与点击事件
+         */
         fun bind(tagModel: TagModel, position: Int) {
             itemBinding.apply {
                 txtTagName.text = tagModel.tagName

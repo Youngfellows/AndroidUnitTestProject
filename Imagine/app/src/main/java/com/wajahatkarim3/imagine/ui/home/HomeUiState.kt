@@ -15,12 +15,42 @@
 */
 package com.wajahatkarim3.imagine.ui.home
 
+/**
+ *主页UI状态常量
+ */
 sealed class HomeUiState
 
+/**
+ *主页UI状态常量 - 加载中状态
+ */
 object LoadingState : HomeUiState()
+
+/**
+ *主页UI状态常量 - 加载下一页状态
+ */
 object LoadingNextPageState : HomeUiState()
+
+/**
+ *主页UI状态常量 - 内容状态
+ */
 object ContentState : HomeUiState()
+
+/**
+ *主页UI状态常量 - 下一页内容状态
+ */
 object ContentNextPageState : HomeUiState()
+
+/**
+ *主页UI状态常量 - 闲置状态
+ */
 object EmptyState : HomeUiState()
+
+/**
+ *主页UI状态常量 - 错误状态
+ */
 class ErrorState(val message: String) : HomeUiState()
+
+/**
+ *主页UI状态常量 - 加载下一页错误状态
+ */
 class ErrorNextPageState(val message: String) : HomeUiState()
