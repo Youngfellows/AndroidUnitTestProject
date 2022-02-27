@@ -20,8 +20,20 @@ import retrofit2.Response
 
 object ApiUtil {
 
+    /**
+     * 创建一个成功的响应
+     * @param T 泛型参数
+     * @param data 泛型参数
+     * @return
+     */
     fun <T : Any> successCall(data: T) = createCall(Response.success(data))
 
+    /**
+     * 创建一个成功的响应
+     * @param T 泛型参数
+     * @param response 泛型参数
+     * @return
+     */
     fun <T : Any> createCall(response: Response<T>): ApiResponse<T> =
         ApiResponse.create(200..229, response)
 }

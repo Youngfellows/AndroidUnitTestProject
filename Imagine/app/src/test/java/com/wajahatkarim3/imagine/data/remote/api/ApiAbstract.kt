@@ -34,8 +34,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
+/**
+ * 模拟本地网络请求
+ * @param T 泛型参数
+ */
 @RunWith(JUnit4::class)
 abstract class ApiAbstract<T> {
+
     @Rule
     @JvmField
     val instantExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
@@ -71,6 +76,11 @@ abstract class ApiAbstract<T> {
         mockWebServer.enqueue(mockResponse.setBody(source.readString(StandardCharsets.UTF_8)))
     }
 
+    /**
+     * 创建本地网络响应
+     * @param clazz 网络接口
+     * @return 网络接口
+     */
     fun createService(clazz: Class<T>): T {
         return Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))

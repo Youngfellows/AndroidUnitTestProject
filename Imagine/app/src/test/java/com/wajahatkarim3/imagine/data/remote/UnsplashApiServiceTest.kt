@@ -26,8 +26,14 @@ import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 
+/**
+ * 模拟获取网络图片和关键字搜索
+ */
 class UnsplashApiServiceTest : ApiAbstract<UnsplashApiService>() {
 
+    /**
+     * 请求接口
+     */
     private lateinit var apiService: UnsplashApiService
 
     @get:Rule
@@ -42,6 +48,9 @@ class UnsplashApiServiceTest : ApiAbstract<UnsplashApiService>() {
     fun tearDown() {
     }
 
+    /**
+     * 模拟获取图片
+     */
     @Throws(IOException::class)
     @Test
     fun `test loadPhotos() returns list of Photos`() = runBlocking {
@@ -56,11 +65,17 @@ class UnsplashApiServiceTest : ApiAbstract<UnsplashApiService>() {
         // Then
         assertThat(responseBody[0].id, `is`("LBI7cgq3pbM"))
         assertThat(responseBody[0].color, `is`("#60544D"))
-        assertThat(responseBody[0].urls.thumb, `is`("https://images.unsplash.com/face-springmorning.jpg?q=75&fm=jpg&w=200&fit=max"))
+        assertThat(
+            responseBody[0].urls.thumb,
+            `is`("https://images.unsplash.com/face-springmorning.jpg?q=75&fm=jpg&w=200&fit=max")
+        )
         assertThat(responseBody[0].user.id, `is`("pXhwzz1JtQU"))
         assertThat(responseBody[0].user.username, `is`("poorkane"))
     }
 
+    /**
+     * 模拟查询图片
+     */
     @Throws(IOException::class)
     @Test
     fun `test searchPhotos() returns list of Photos`() = runBlocking {
@@ -79,7 +94,10 @@ class UnsplashApiServiceTest : ApiAbstract<UnsplashApiService>() {
 
         assertThat(responseBody.photosList[0].id, `is`("eOLpJytrbsQ"))
         assertThat(responseBody.photosList[0].color, `is`("#A7A2A1"))
-        assertThat(responseBody.photosList[0].urls.thumb, `is`("https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=8aae34cf35df31a592f0bef16e6342ef"))
+        assertThat(
+            responseBody.photosList[0].urls.thumb,
+            `is`("https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=8aae34cf35df31a592f0bef16e6342ef")
+        )
         assertThat(responseBody.photosList[0].user.id, `is`("Ul0QVz12Goo"))
         assertThat(responseBody.photosList[0].user.username, `is`("ugmonk"))
     }
