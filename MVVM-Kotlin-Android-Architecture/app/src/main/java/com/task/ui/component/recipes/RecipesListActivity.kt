@@ -28,7 +28,7 @@ import com.task.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Created by AhmedEltaher
+ * 主页-菜谱页
  */
 @AndroidEntryPoint
 class RecipesListActivity : BaseActivity() {

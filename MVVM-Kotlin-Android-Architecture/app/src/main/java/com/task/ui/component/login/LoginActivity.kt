@@ -54,6 +54,10 @@ class LoginActivity : BaseActivity() {
         )
     }
 
+    /**
+     * 函数类型,也是一个回调函数
+     * @param status
+     */
     private fun handleLoginResult(status: Resource<LoginResponse>) {
         when (status) {
             is Resource.Loading -> binding.loaderView.toVisible()
@@ -68,6 +72,9 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    /**
+     * 跳转到主页
+     */
     private fun navigateToMainScreen() {
         val nextScreenIntent = Intent(this, RecipesListActivity::class.java)
         startActivity(nextScreenIntent)

@@ -23,12 +23,12 @@ import com.task.R
 
 fun View.showKeyboard() {
     (this.context.getSystemService(Service.INPUT_METHOD_SERVICE) as? InputMethodManager)
-            ?.showSoftInput(this, 0)
+        ?.showSoftInput(this, 0)
 }
 
 fun View.hideKeyboard() {
     (this.context.getSystemService(Service.INPUT_METHOD_SERVICE) as? InputMethodManager)
-            ?.hideSoftInputFromWindow(this.windowToken, 0)
+        ?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
 fun View.toVisible() {
@@ -66,9 +66,10 @@ fun View.showSnackbar(snackbarText: String, timeLength: Int) {
  * Triggers a snackbar message when the value contained by snackbarTaskMessageLiveEvent is modified.
  */
 fun View.setupSnackbar(
-        lifecycleOwner: LifecycleOwner,
-        snackbarEvent: LiveData<SingleEvent<Any>>,
-        timeLength: Int) {
+    lifecycleOwner: LifecycleOwner,
+    snackbarEvent: LiveData<SingleEvent<Any>>,
+    timeLength: Int
+) {
     snackbarEvent.observe(lifecycleOwner, Observer { event ->
         event.getContentIfNotHandled()?.let {
             when (it) {
@@ -89,16 +90,17 @@ fun View.setupSnackbar(
 }
 
 fun View.showToast(
-        lifecycleOwner: LifecycleOwner,
-        ToastEvent: LiveData<SingleEvent<Any>>,
-        timeLength: Int
+    lifecycleOwner: LifecycleOwner,
+    ToastEvent: LiveData<SingleEvent<Any>>,
+    timeLength: Int
 ) {
 
     ToastEvent.observe(lifecycleOwner, Observer { event ->
         event.getContentIfNotHandled()?.let {
             when (it) {
                 is String -> Toast.makeText(this.context, it, timeLength).show()
-                is Int -> Toast.makeText(this.context, this.context.getString(it), timeLength).show()
+                is Int -> Toast.makeText(this.context, this.context.getString(it), timeLength)
+                    .show()
                 else -> {
                 }
             }
@@ -122,18 +124,20 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 }
 
 fun ImageView.loadImage(@DrawableRes resId: Int) = Picasso.get().load(resId).into(this)
-fun ImageView.loadImage(url: String) = Picasso.get().load(url).placeholder(R.drawable.ic_healthy_food).error(R.drawable.ic_healthy_food).into(this)
+fun ImageView.loadImage(url: String) =
+    Picasso.get().load(url).placeholder(R.drawable.ic_healthy_food)
+        .error(R.drawable.ic_healthy_food).into(this)
 
 fun AppCompatTextView.setTextFutureExt(text: String) =
-        setTextFuture(
-                PrecomputedTextCompat.getTextFuture(
-                        text,
-                        TextViewCompat.getTextMetricsParams(this),
-                        null
-                )
+    setTextFuture(
+        PrecomputedTextCompat.getTextFuture(
+            text,
+            TextViewCompat.getTextMetricsParams(this),
+            null
         )
+    )
 
 fun AppCompatEditText.setTextFutureExt(text: String) =
-        setText(
-                PrecomputedTextCompat.create(text, TextViewCompat.getTextMetricsParams(this))
-        )
+    setText(
+        PrecomputedTextCompat.create(text, TextViewCompat.getTextMetricsParams(this))
+    )

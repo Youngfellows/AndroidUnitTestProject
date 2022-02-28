@@ -29,6 +29,9 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val dataRepository: DataRepository) :
     BaseViewModel() {
 
+    /**
+     * 登录响应数据
+     */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponse>>()
     val loginLiveData: LiveData<Resource<LoginResponse>> get() = loginLiveDataPrivate
@@ -44,6 +47,11 @@ class LoginViewModel @Inject constructor(private val dataRepository: DataReposit
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
 
+    /**
+     * 登录
+     * @param userName 用户名
+     * @param passWord 密码
+     */
     fun doLogin(userName: String, passWord: String) {
         val isUsernameValid = isValidEmail(userName)
         val isPassWordValid = passWord.trim().length > 4
@@ -55,6 +63,7 @@ class LoginViewModel @Inject constructor(private val dataRepository: DataReposit
             loginLiveDataPrivate.value = Resource.DataError(CHECK_YOUR_FIELDS)
         } else {
             viewModelScope.launch {
+                //加载中
                 loginLiveDataPrivate.value = Resource.Loading()
                 wrapEspressoIdlingResource {
                     dataRepository.doLogin(loginRequest = LoginRequest(userName, passWord))
