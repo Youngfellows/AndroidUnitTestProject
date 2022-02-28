@@ -15,15 +15,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Created by AhmedEltaher
+ * 菜谱详情的ViewModel
+ * @property dataRepository
  */
 @HiltViewModel
-open class DetailsViewModel @Inject constructor(private val dataRepository: DataRepositorySource) : BaseViewModel() {
+open class DetailsViewModel @Inject constructor(private val dataRepository: DataRepositorySource) :
+    BaseViewModel() {
 
+    /**
+     * 菜谱列表项数据
+     */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val recipePrivate = MutableLiveData<RecipesItem>()
     val recipeData: LiveData<RecipesItem> get() = recipePrivate
 
+    /**
+     * 喜欢收藏数据
+     */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val isFavouritePrivate = MutableLiveData<Resource<Boolean>>()
     val isFavourite: LiveData<Resource<Boolean>> get() = isFavouritePrivate
@@ -32,6 +40,9 @@ open class DetailsViewModel @Inject constructor(private val dataRepository: Data
         recipePrivate.value = recipe
     }
 
+    /**
+     * 添加喜欢收藏
+     */
     open fun addToFavourites() {
         viewModelScope.launch {
             isFavouritePrivate.value = Resource.Loading()
@@ -45,6 +56,9 @@ open class DetailsViewModel @Inject constructor(private val dataRepository: Data
         }
     }
 
+    /**
+     * 移除喜欢收藏
+     */
     fun removeFromFavourites() {
         viewModelScope.launch {
             isFavouritePrivate.value = Resource.Loading()
@@ -53,7 +67,9 @@ open class DetailsViewModel @Inject constructor(private val dataRepository: Data
                     dataRepository.removeFromFavourite(it).collect { isRemoved ->
                         when (isRemoved) {
                             is Resource.Success -> {
-                                isRemoved.data?.let { isFavouritePrivate.value = Resource.Success(!isRemoved.data) }
+                                isRemoved.data?.let {
+                                    isFavouritePrivate.value = Resource.Success(!isRemoved.data)
+                                }
                             }
                             is Resource.DataError -> {
                                 isFavouritePrivate.value = isRemoved
@@ -68,6 +84,9 @@ open class DetailsViewModel @Inject constructor(private val dataRepository: Data
         }
     }
 
+    /**
+     * 是否是喜欢收藏的菜谱
+     */
     fun isFavourites() {
         viewModelScope.launch {
             isFavouritePrivate.value = Resource.Loading()

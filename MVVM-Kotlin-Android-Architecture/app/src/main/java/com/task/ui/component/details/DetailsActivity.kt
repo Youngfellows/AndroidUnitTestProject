@@ -18,14 +18,19 @@ import com.task.utils.toVisible
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Created by AhmedEltaher
+ * 菜谱详情页
  */
-
 @AndroidEntryPoint
 class DetailsActivity : BaseActivity() {
 
+    /**
+     * 菜谱详情的ViewModel
+     */
     private val viewModel: DetailsViewModel by viewModels()
 
+    /**
+     * 菜谱详情的DataBinding
+     */
     private lateinit var binding: DetailsLayoutBinding
     private var menu: Menu? = null
 
@@ -63,6 +68,10 @@ class DetailsActivity : BaseActivity() {
         observe(viewModel.isFavourite, ::handleIsFavourite)
     }
 
+    /**
+     * 函数回调
+     * @param isFavourite 是否喜欢收藏数据
+     */
     private fun handleIsFavourite(isFavourite: Resource<Boolean>) {
         when (isFavourite) {
             is Resource.Loading -> {
@@ -85,20 +94,24 @@ class DetailsActivity : BaseActivity() {
     private fun handleIsFavouriteUI(isFavourite: Boolean) {
         menu?.let {
             it.findItem(R.id.add_to_favorite)?.icon =
-                    if (isFavourite) {
-                        ContextCompat.getDrawable(this, R.drawable.ic_star_24)
-                    } else {
-                        ContextCompat.getDrawable(this, R.drawable.ic_outline_star_border_24)
-                    }
+                if (isFavourite) {
+                    ContextCompat.getDrawable(this, R.drawable.ic_star_24)
+                } else {
+                    ContextCompat.getDrawable(this, R.drawable.ic_outline_star_border_24)
+                }
         }
     }
 
+    /**
+     * 回调函数 - 函数类型
+     * @param recipesItem 菜谱项数据
+     */
     private fun initializeView(recipesItem: RecipesItem) {
         binding.tvName.text = recipesItem.name
         binding.tvHeadline.text = recipesItem.headline
         binding.tvDescription.text = recipesItem.description
         Picasso.get().load(recipesItem.image).placeholder(R.drawable.ic_healthy_food_small)
-                .into(binding.ivRecipeImage)
+            .into(binding.ivRecipeImage)
 
     }
 }
