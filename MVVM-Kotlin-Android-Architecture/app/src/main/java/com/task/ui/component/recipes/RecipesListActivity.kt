@@ -52,6 +52,11 @@ class RecipesListActivity : BaseActivity() {
         recipesListViewModel.getRecipes()
     }
 
+    /**
+     * 搜索菜单
+     * @param menu
+     * @return
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_actions, menu)
         // Associate searchable configuration with the SearchView
@@ -63,7 +68,7 @@ class RecipesListActivity : BaseActivity() {
         }
         searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                handleSearch(query)
+                handleSearch(query) //搜索
                 return false
             }
 
@@ -99,6 +104,10 @@ class RecipesListActivity : BaseActivity() {
         }
     }
 
+    /**
+     * 跳转到详情页
+     * @param navigateEvent
+     */
     private fun navigateToDetailsScreen(navigateEvent: SingleEvent<RecipesItem>) {
         navigateEvent.getContentIfNotHandled()?.let {
             val nextScreenIntent = Intent(this, DetailsActivity::class.java).apply {

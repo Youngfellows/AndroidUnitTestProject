@@ -8,12 +8,20 @@ import com.task.databinding.RecipeItemBinding
 import com.task.ui.base.listeners.RecyclerItemListener
 import com.task.ui.component.recipes.RecipesListViewModel
 
+
 /**
- * Created by AhmedEltaher
+ * 菜谱数据适配器
+ * @property recipesListViewModel
+ * @property recipes 数据集
  */
+class RecipesAdapter(
+    private val recipesListViewModel: RecipesListViewModel,
+    private val recipes: List<RecipesItem>
+) : RecyclerView.Adapter<RecipeViewHolder>() {
 
-class RecipesAdapter(private val recipesListViewModel: RecipesListViewModel, private val recipes: List<RecipesItem>) : RecyclerView.Adapter<RecipeViewHolder>() {
-
+    /**
+     * 回调函数 - 匿名对象
+     */
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(recipe: RecipesItem) {
             recipesListViewModel.openRecipeDetails(recipe)
@@ -21,7 +29,8 @@ class RecipesAdapter(private val recipesListViewModel: RecipesListViewModel, pri
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val itemBinding = RecipeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding =
+            RecipeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RecipeViewHolder(itemBinding)
     }
 
