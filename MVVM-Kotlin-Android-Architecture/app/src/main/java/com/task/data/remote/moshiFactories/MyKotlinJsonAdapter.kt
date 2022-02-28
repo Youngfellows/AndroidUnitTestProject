@@ -33,9 +33,10 @@ private val ABSENT_VALUE = Any()
  * constructor, and then by setting any additional properties that exist, if any.
  */
 internal class MyKotlinJsonAdapter<T>(
-        val constructor: KFunction<T>,
-        val bindings: List<Binding<T, Any?>?>,
-        val options: JsonReader.Options) : JsonAdapter<T>() {
+    val constructor: KFunction<T>,
+    val bindings: List<Binding<T, Any?>?>,
+    val options: JsonReader.Options
+) : JsonAdapter<T>() {
 
     override fun fromJson(reader: JsonReader): T {
         val constructorSize = constructor.parameters.size
@@ -55,7 +56,8 @@ internal class MyKotlinJsonAdapter<T>(
 
             if (values[index] !== ABSENT_VALUE) {
                 throw JsonDataException(
-                    "Multiple values for '${constructor.parameters[index].name}' at ${reader.path}")
+                    "Multiple values for '${constructor.parameters[index].name}' at ${reader.path}"
+                )
             }
 
             values[index] = binding.adapter.fromJson(reader)
@@ -72,7 +74,8 @@ internal class MyKotlinJsonAdapter<T>(
             if (values[i] === ABSENT_VALUE && !constructor.parameters[i].isOptional) {
                 if (!constructor.parameters[i].type.isMarkedNullable) {
                     throw JsonDataException(
-                        "Required value '${constructor.parameters[i].name}' missing at ${reader.path}")
+                        "Required value '${constructor.parameters[i].name}' missing at ${reader.path}"
+                    )
                 }
                 values[i] = null // Replace absent with null.
             }
@@ -115,7 +118,8 @@ internal class MyKotlinJsonAdapter<T>(
         val name: String,
         val adapter: JsonAdapter<P>,
         val property: KProperty1<K, P>,
-        val parameter: KParameter?) {
+        val parameter: KParameter?
+    ) {
         fun get(value: K) = property.get(value)
 
         fun set(result: K, value: P) {
@@ -126,8 +130,10 @@ internal class MyKotlinJsonAdapter<T>(
     }
 
     /** A simple [Map] that uses parameter indexes instead of sorting or hashing. */
-    class IndexedParameterMap(val parameterKeys: List<KParameter>, val parameterValues: Array<Any?>)
-        : AbstractMap<KParameter, Any?>() {
+    class IndexedParameterMap(
+        val parameterKeys: List<KParameter>,
+        val parameterValues: Array<Any?>
+    ) : AbstractMap<KParameter, Any?>() {
 
         override val entries: Set<Entry<KParameter, Any?>>
             get() {
@@ -135,11 +141,12 @@ internal class MyKotlinJsonAdapter<T>(
                     SimpleEntry<KParameter, Any?>(value, parameterValues[index])
                 }
                 return allPossibleEntries.filterTo(LinkedHashSet<Entry<KParameter, Any?>>()) {
-                    it.value !== ABSENT_VALUE && it.value!=null
+                    it.value !== ABSENT_VALUE && it.value != null
                 }
             }
 
-        override fun containsKey(key: KParameter) = parameterValues[key.index] !== ABSENT_VALUE && parameterValues[key.index] !=null
+        override fun containsKey(key: KParameter) =
+            parameterValues[key.index] !== ABSENT_VALUE && parameterValues[key.index] != null
 
         override fun get(key: KParameter): Any? {
             val value = parameterValues[key.index]
@@ -196,14 +203,17 @@ class MyKotlinJsonAdapterFactory : JsonAdapter.Factory {
             if (Modifier.isTransient(property.javaField?.modifiers ?: 0)) {
                 if (parameter != null && !parameter.isOptional) {
                     throw IllegalArgumentException(
-                        "No default value for transient constructor $parameter")
+                        "No default value for transient constructor $parameter"
+                    )
                 }
                 continue
             }
 
             if (parameter != null && parameter.type != property.returnType) {
-                throw IllegalArgumentException("'${property.name}' has a constructor parameter of type " +
-                        "${parameter.type} but a property of type ${property.returnType}.")
+                throw IllegalArgumentException(
+                    "'${property.name}' has a constructor parameter of type " +
+                            "${parameter.type} but a property of type ${property.returnType}."
+                )
             }
 
             if (property !is KMutableProperty1 && parameter == null) continue
@@ -222,13 +232,16 @@ class MyKotlinJsonAdapterFactory : JsonAdapter.Factory {
             val name = jsonAnnotation?.name ?: property.name
             val resolvedPropertyType = resolve(type, rawType, property.returnType.javaType)
             val adapter = moshi.adapter<Any>(
-                resolvedPropertyType, Util.jsonAnnotations(allAnnotations.toTypedArray()), property.name)
+                resolvedPropertyType,
+                Util.jsonAnnotations(allAnnotations.toTypedArray()),
+                property.name
+            )
 
             bindingsByName[property.name] =
-                    MyKotlinJsonAdapter.Binding(
-                            name, adapter,
-                            property as KProperty1<Any, Any?>, parameter
-                    )
+                MyKotlinJsonAdapter.Binding(
+                    name, adapter,
+                    property as KProperty1<Any, Any?>, parameter
+                )
         }
 
         val bindings = ArrayList<MyKotlinJsonAdapter.Binding<Any, Any?>?>()

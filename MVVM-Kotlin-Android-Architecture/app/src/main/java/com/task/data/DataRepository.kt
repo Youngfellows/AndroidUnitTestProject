@@ -13,23 +13,43 @@ import kotlin.coroutines.CoroutineContext
 
 
 /**
- * Created by AhmedEltaher
+ * 执行具体的数据请求
+ * @property remoteRepository 远程Repository
+ * @property localRepository 本地Repository
+ * @property ioDispatcher 分发器
  */
+class DataRepository @Inject constructor(
+    private val remoteRepository: RemoteData,
+    private val localRepository: LocalData,
+    private val ioDispatcher: CoroutineContext
+) : DataRepositorySource {
 
-class DataRepository @Inject constructor(private val remoteRepository: RemoteData, private val localRepository: LocalData, private val ioDispatcher: CoroutineContext) : DataRepositorySource {
-
+    /**
+     * 请求菜谱
+     * @return
+     */
     override suspend fun requestRecipes(): Flow<Resource<Recipes>> {
         return flow {
             emit(remoteRepository.requestRecipes())
         }.flowOn(ioDispatcher)
     }
 
+    /**
+     * 登录
+     * @param loginRequest 登录请全体
+     * @return
+     */
     override suspend fun doLogin(loginRequest: LoginRequest): Flow<Resource<LoginResponse>> {
         return flow {
             emit(localRepository.doLogin(loginRequest))
         }.flowOn(ioDispatcher)
     }
 
+    /**
+     * 添加到喜欢收藏
+     * @param id 菜谱的ID
+     * @return
+     */
     override suspend fun addToFavourite(id: String): Flow<Resource<Boolean>> {
         return flow {
             localRepository.getCachedFavourites().let {
@@ -48,12 +68,22 @@ class DataRepository @Inject constructor(private val remoteRepository: RemoteDat
         }.flowOn(ioDispatcher)
     }
 
+    /**
+     * 移除指定ID的菜谱到喜欢的收藏
+     * @param id 指定菜谱ID
+     * @return
+     */
     override suspend fun removeFromFavourite(id: String): Flow<Resource<Boolean>> {
         return flow {
             emit(localRepository.removeFromFavourites(id))
         }.flowOn(ioDispatcher)
     }
 
+    /**
+     * 是否是收藏喜欢的菜谱
+     * @param id 指定菜谱ID
+     * @return
+     */
     override suspend fun isFavourite(id: String): Flow<Resource<Boolean>> {
         return flow {
             emit(localRepository.isFavourite(id))

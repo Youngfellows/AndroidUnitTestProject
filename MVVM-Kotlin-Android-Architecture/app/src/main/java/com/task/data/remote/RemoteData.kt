@@ -13,11 +13,21 @@ import javax.inject.Inject
 
 
 /**
- * Created by AhmedEltaher
+ * 远程数据提供者Repository
+ *
+ * @property serviceGenerator
+ * @property networkConnectivity
  */
-
 class RemoteData @Inject
-constructor(private val serviceGenerator: ServiceGenerator, private val networkConnectivity: NetworkConnectivity) : RemoteDataSource {
+constructor(
+    private val serviceGenerator: ServiceGenerator,
+    private val networkConnectivity: NetworkConnectivity
+) : RemoteDataSource {
+
+    /**
+     * 网球请求-获取菜谱
+     * @return
+     */
     override suspend fun requestRecipes(): Resource<Recipes> {
         val recipesService = serviceGenerator.createService(RecipesService::class.java)
         return when (val response = processCall(recipesService::fetchRecipes)) {

@@ -10,32 +10,56 @@ import com.task.data.dto.login.LoginResponse
 import com.task.data.error.PASS_WORD_ERROR
 import javax.inject.Inject
 
-/**
- * Created by AhmedEltaher
- */
 
+/**
+ * 本地数据提供者
+ * @property context 上下文
+ */
 class LocalData @Inject constructor(val context: Context) {
 
+    /**
+     * 登录
+     * @param loginRequest 登录请求
+     * @return 登录响应
+     */
     fun doLogin(loginRequest: LoginRequest): Resource<LoginResponse> {
         if (loginRequest == LoginRequest("ahmed@ahmed.ahmed", "ahmed")) {
-            return Resource.Success(LoginResponse("123", "Ahmed", "Mahmoud",
+            return Resource.Success(
+                LoginResponse(
+                    "123", "Ahmed", "Mahmoud",
                     "FrunkfurterAlle", "77", "12000", "Berlin",
-                    "Germany", "ahmed@ahmed.ahmed"))
+                    "Germany", "ahmed@ahmed.ahmed"
+                )
+            )
         }
         return Resource.DataError(PASS_WORD_ERROR)
     }
 
+    /**
+     * 获取sp保存的喜欢收藏列表
+     * @return
+     */
     fun getCachedFavourites(): Resource<Set<String>> {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, 0)
         return Resource.Success(sharedPref.getStringSet(FAVOURITES_KEY, setOf()) ?: setOf())
     }
 
+    /**
+     * 指定ID菜谱是否是喜欢的收藏菜谱
+     * @param id 指定ID菜谱
+     * @return
+     */
     fun isFavourite(id: String): Resource<Boolean> {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, 0)
         val cache = sharedPref.getStringSet(FAVOURITES_KEY, setOf<String>()) ?: setOf()
         return Resource.Success(cache.contains(id))
     }
 
+    /**
+     * 缓存指定ID的菜谱到收藏喜欢
+     * @param ids 指定菜谱IDS
+     * @return
+     */
     fun cacheFavourites(ids: Set<String>): Resource<Boolean> {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, 0)
         val editor: SharedPreferences.Editor = sharedPref.edit()
@@ -45,9 +69,15 @@ class LocalData @Inject constructor(val context: Context) {
         return Resource.Success(isSuccess)
     }
 
+    /**
+     * 移除指定ID的菜谱到喜欢的收藏
+     * @param id 指定菜谱ID
+     * @return
+     */
     fun removeFromFavourites(id: String): Resource<Boolean> {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, 0)
-        var set = sharedPref.getStringSet(FAVOURITES_KEY, mutableSetOf<String>())?.toMutableSet() ?: mutableSetOf()
+        var set = sharedPref.getStringSet(FAVOURITES_KEY, mutableSetOf<String>())?.toMutableSet()
+            ?: mutableSetOf()
         if (set.contains(id)) {
             set.remove(id)
         }

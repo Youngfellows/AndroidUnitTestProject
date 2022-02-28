@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by AhmedEltaher
  */
 @AndroidEntryPoint
-class SplashActivity : BaseActivity(){
+class SplashActivity : BaseActivity() {
 
     private lateinit var binding: SplashLayoutBinding
 
@@ -30,8 +30,12 @@ class SplashActivity : BaseActivity(){
     }
 
     override fun observeViewModel() {
+
     }
 
+    /**
+     * 跳转到主界面
+     */
     private fun navigateToMainScreen() {
         Handler().postDelayed({
             val nextScreenIntent = Intent(this, LoginActivity::class.java)

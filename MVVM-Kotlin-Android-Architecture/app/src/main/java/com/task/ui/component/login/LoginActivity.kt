@@ -14,12 +14,19 @@ import com.task.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Created by AhmedEltaher
+ * 登录页
  */
 @AndroidEntryPoint
 class LoginActivity : BaseActivity() {
 
+    /**
+     * 登录ViewModel
+     */
     private val loginViewModel: LoginViewModel by viewModels()
+
+    /**
+     * 登录ViewBinding
+     */
     private lateinit var binding: LoginActivityBinding
 
 

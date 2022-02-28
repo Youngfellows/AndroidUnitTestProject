@@ -11,7 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    /**
+     *观察数据变化
+     */
     abstract fun observeViewModel()
+
+    /**
+     * 初始化ViewBinding
+     */
     protected abstract fun initViewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {

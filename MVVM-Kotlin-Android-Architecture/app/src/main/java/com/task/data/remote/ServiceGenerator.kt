@@ -14,10 +14,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Created by AhmedEltaher
- */
 
+/**
+ *  网络请求服务
+ */
 private const val timeoutRead = 30   //In seconds
 private const val contentType = "Content-Type"
 private const val contentTypeValue = "application/json"
@@ -25,16 +25,18 @@ private const val timeoutConnect = 30   //In seconds
 
 @Singleton
 class ServiceGenerator @Inject constructor() {
+
     private val okHttpBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
+
     private val retrofit: Retrofit
 
     private var headerInterceptor = Interceptor { chain ->
         val original = chain.request()
 
         val request = original.newBuilder()
-                .header(contentType, contentTypeValue)
-                .method(original.method, original.body)
-                .build()
+            .header(contentType, contentTypeValue)
+            .method(original.method, original.body)
+            .build()
 
         chain.proceed(request)
     }
@@ -55,19 +57,29 @@ class ServiceGenerator @Inject constructor() {
         okHttpBuilder.readTimeout(timeoutRead.toLong(), TimeUnit.SECONDS)
         val client = okHttpBuilder.build()
         retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL).client(client)
-                .addConverterFactory(MoshiConverterFactory.create(getMoshi()))
-                .build()
+            .baseUrl(BASE_URL).client(client)
+            .addConverterFactory(MoshiConverterFactory.create(getMoshi()))
+            .build()
     }
 
+    /**
+     * 创建网络请求接口
+     * @param S
+     * @param serviceClass
+     * @return
+     */
     fun <S> createService(serviceClass: Class<S>): S {
         return retrofit.create(serviceClass)
     }
 
+    /**
+     * JSON转化工具
+     * @return
+     */
     private fun getMoshi(): Moshi {
         return Moshi.Builder()
-                .add(MyKotlinJsonAdapterFactory())
-                .add(MyStandardJsonAdapters.FACTORY)
-                .build()
+            .add(MyKotlinJsonAdapterFactory())
+            .add(MyStandardJsonAdapters.FACTORY)
+            .build()
     }
 }
