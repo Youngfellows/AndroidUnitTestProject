@@ -17,26 +17,42 @@ import org.junit.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 /**
- * Created by AhmedEltaher
+ * 菜谱详情页测试
  */
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class)
 class DetailsViewModelTest {
-    // Subject under test
+    /**
+     * Subject under test
+     * 被测试对象
+     */
     private lateinit var detailsViewModel: DetailsViewModel
 
-    // Use a fake UseCase to be injected into the viewModel
+    /**
+     *  Use a fake UseCase to be injected into the viewModel
+     * 创建一个模拟对象
+     */
     private val dataRepository: DataRepository = mockk()
 
-    // Set the main coroutines dispatcher for unit testing.
+
+    /**
+     * Set the main coroutines dispatcher for unit testing.
+     * 设置用于单元测试的主协程调度器
+     */
     @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each task synchronously using Architecture Components.
+    /**
+     * 使用架构组件同步执行每个任务。
+     * Executes each task synchronously using Architecture Components.
+     */
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    /**
+     * 创建模拟返回数据模型
+     */
     private val testModelsGenerator: TestModelsGenerator = TestModelsGenerator()
 
     @Test

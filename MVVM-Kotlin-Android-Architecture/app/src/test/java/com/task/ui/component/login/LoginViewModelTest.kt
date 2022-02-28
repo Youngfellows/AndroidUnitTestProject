@@ -21,23 +21,36 @@ import org.junit.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 /**
- * Created by AhmedEltaher
+ * 单元测试登录ViewModel
  */
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class)
 class LoginViewModelTest {
-    // Subject under test
+
+    /**
+     * 被测试对象
+     *  Subject under test
+     */
     private lateinit var loginViewModel: LoginViewModel
 
-    // Use a fake UseCase to be injected into the viewModel
+    /**
+     *  Use a fake UseCase to be injected into the viewModel
+     * 创建一个模拟对象
+     */
     private val dataRepository: DataRepository = mockk()
 
-    // Set the main coroutines dispatcher for unit testing.
+    /**
+     * Set the main coroutines dispatcher for unit testing.
+     * 设置用于单元测试的主协程调度器
+     */
     @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each task synchronously using Architecture Components.
+    /**
+     * 使用架构组件同步执行每个任务。
+     * Executes each task synchronously using Architecture Components.
+     */
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -50,9 +63,11 @@ class LoginViewModelTest {
         // Let's do an answer for the liveData
         val userName = "ahmed@ahmed.ahmed"
         val password = "ahmed"
-        val loginResponse = LoginResponse("123", "Ahmed", "Mahmoud",
-                "FrunkfurterAlle", "77", "12000", "Berlin",
-                "Germany", "ahmed@ahmed.ahmed")
+        val loginResponse = LoginResponse(
+            "123", "Ahmed", "Mahmoud",
+            "FrunkfurterAlle", "77", "12000", "Berlin",
+            "Germany", "ahmed@ahmed.ahmed"
+        )
 
         //1- Mock calls
         coEvery { dataRepository.doLogin(LoginRequest(userName, password)) } returns flow {

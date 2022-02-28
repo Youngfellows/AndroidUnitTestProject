@@ -18,25 +18,49 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
+/**
+ * 单元测试菜谱列表ViewModel
+ */
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class)
 class RecipesListViewModelTest {
-    // Subject under test
+    /**
+     *  Subject under test
+     *  被测试对象
+     */
     private lateinit var recipesListViewModel: RecipesListViewModel
 
-    // Use a fake UseCase to be injected into the viewModel
+    /**
+     *  Use a fake UseCase to be injected into the viewModel
+     * 创建一个模拟对象
+     */
     private val dataRepository: DataRepository = mockk()
 
-    // Set the main coroutines dispatcher for unit testing.
+    /**
+     * Set the main coroutines dispatcher for unit testing.
+     * 设置用于单元测试的主协程调度器
+     */
     @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    // Executes each task synchronously using Architecture Components.
+
+    /**
+     * 使用架构组件同步执行每个任务。
+     * Executes each task synchronously using Architecture Components.
+     */
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+
+    /**
+     * 菜谱标题
+     */
     private lateinit var recipeTitle: String
+
+    /**
+     * 创建模拟返回数据模型
+     */
     private val testModelsGenerator: TestModelsGenerator = TestModelsGenerator()
 
     @Before
@@ -63,9 +87,10 @@ class RecipesListViewModelTest {
         recipesListViewModel.recipesLiveData.observeForever { }
 
         //3-verify
-        val isEmptyList = recipesListViewModel.recipesLiveData.value?.data?.recipesList.isNullOrEmpty()
+        val isEmptyList =
+            recipesListViewModel.recipesLiveData.value?.data?.recipesList.isNullOrEmpty()
         assertEquals(recipesModel, recipesListViewModel.recipesLiveData.value?.data)
-        assertEquals(false,isEmptyList)
+        assertEquals(false, isEmptyList)
     }
 
     @Test
@@ -85,7 +110,8 @@ class RecipesListViewModelTest {
         recipesListViewModel.recipesLiveData.observeForever { }
 
         //3-verify
-        val isEmptyList = recipesListViewModel.recipesLiveData.value?.data?.recipesList.isNullOrEmpty()
+        val isEmptyList =
+            recipesListViewModel.recipesLiveData.value?.data?.recipesList.isNullOrEmpty()
         assertEquals(recipesModel, recipesListViewModel.recipesLiveData.value?.data)
         assertEquals(true, isEmptyList)
     }
@@ -117,7 +143,8 @@ class RecipesListViewModelTest {
         val title = recipe.name
         //1- Mock calls
         recipesListViewModel = RecipesListViewModel(dataRepository)
-        recipesListViewModel.recipesLiveDataPrivate.value = Resource.Success(testModelsGenerator.generateRecipes())
+        recipesListViewModel.recipesLiveDataPrivate.value =
+            Resource.Success(testModelsGenerator.generateRecipes())
 
         //2-Call
         recipesListViewModel.onSearchClick(title)
@@ -135,7 +162,8 @@ class RecipesListViewModelTest {
 
         //1- Mock calls
         recipesListViewModel = RecipesListViewModel(dataRepository)
-        recipesListViewModel.recipesLiveDataPrivate.value = Resource.Success(testModelsGenerator.generateRecipes())
+        recipesListViewModel.recipesLiveDataPrivate.value =
+            Resource.Success(testModelsGenerator.generateRecipes())
 
         //2-Call
         recipesListViewModel.onSearchClick(title)
