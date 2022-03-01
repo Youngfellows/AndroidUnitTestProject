@@ -28,6 +28,7 @@ import java.net.SocketTimeoutException
 internal class FoodViewModelTest : CoroutineTest {
 
     override lateinit var dispatcher: TestCoroutineDispatcher
+
     override lateinit var testScope: TestCoroutineScope
 
     private val usercase: FoodUsecase = mockk()
@@ -102,12 +103,12 @@ internal class FoodViewModelTest : CoroutineTest {
         val viewModel = FoodViewModel(usercase)
 
         assertThat(viewModel.parseError(IOException()))
-                .isSameInstanceAs(ErrorType.CONNECTION_ERROR)
+            .isSameInstanceAs(ErrorType.CONNECTION_ERROR)
 
         assertThat(viewModel.parseError(SocketTimeoutException()))
-                .isSameInstanceAs(ErrorType.TIMEOUT_ERROR)
+            .isSameInstanceAs(ErrorType.TIMEOUT_ERROR)
 
         assertThat(viewModel.parseError(Exception()))
-                .isSameInstanceAs(ErrorType.GENERIC_ERROR)
+            .isSameInstanceAs(ErrorType.GENERIC_ERROR)
     }
 }
