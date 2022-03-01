@@ -16,6 +16,9 @@ class MainApplication : Application() {
         super.onCreate()
         MultiDex.install(this)
 
+        /**
+         * 初始化依赖注入框架,加载各个模块
+         */
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@MainApplication)

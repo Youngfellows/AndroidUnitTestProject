@@ -13,18 +13,37 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
+
+/**
+ * 网络请求模块
+ */
 private const val TIME_OUT = 30L
 
 val NetworkModule = module {
 
+    /**
+     * ApiService依赖于Retrofit
+     */
     single { createService(get()) }
 
+    /**
+     * Retrofit依赖于OkHttpClient
+     */
     single { createRetrofit(get(), BuildConfig.BASE_URL) }
 
+    /**
+     * 创建OkHttpClient
+     */
     single { createOkHttpClient() }
 
+    /**
+     * 创建MoshiConverterFactory
+     */
     single { MoshiConverterFactory.create() }
 
+    /**
+     * 创建Moshi
+     */
     single { Moshi.Builder().build() }
 
 }

@@ -18,8 +18,19 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class PostsActivity : AppCompatActivity() {
 
+    /**
+     * 主页的ViewBinding
+     */
     private lateinit var activityPostsBinding: ActivityPostsBinding
+
+    /**
+     * 列表适配器
+     */
     private var mAdapter: PostsAdapter? = PostsAdapter()
+
+    /**
+     * 主页的ViewModel
+     */
     private val postViewModel: PostsViewModel by viewModel()
 
 
@@ -43,6 +54,7 @@ class PostsActivity : AppCompatActivity() {
 
             postsData.observe(this@PostsActivity, Observer {
                 activityPostsBinding.postsProgressBar.visibility = GONE
+                //更新列表适配器数据集
                 mAdapter?.mPostList = it
             })
 

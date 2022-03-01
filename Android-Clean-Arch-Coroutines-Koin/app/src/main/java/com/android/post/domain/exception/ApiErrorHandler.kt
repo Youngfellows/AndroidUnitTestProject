@@ -7,6 +7,7 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 
 /**
+ * 归一化异常信息
  * Trace exceptions(api call or parse data or connection errors) &
  * depending on what exception returns [ApiErrorf]
  *
