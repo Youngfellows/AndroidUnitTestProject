@@ -17,5 +17,5 @@ class FoodDataModule {
     @Singleton
     fun provideFoodDatabase(application: Application): FoodDatabase =
         Room.inMemoryDatabaseBuilder(application, FoodDatabase::class.java)
-                .allowMainThreadQueries().build()
+            .allowMainThreadQueries().build()
 }

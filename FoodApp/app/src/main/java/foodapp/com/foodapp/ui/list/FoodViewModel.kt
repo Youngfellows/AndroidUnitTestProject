@@ -17,41 +17,62 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class FoodViewModel @ViewModelInject constructor(
-        private val usecase: FoodUsecase) : ViewModel() {
+    private val usecase: FoodUsecase
+) : ViewModel() {
 
+    /**
+     * 被观察数据-食品列表
+     */
     private var _foodItemsLiveData = MutableLiveData<FoodResult<List<FoodItem>>>()
-    private var _foodItemLiveData = MutableLiveData<FoodResult<FoodItem>>()
 
     val foodItemsLiveData: LiveData<FoodResult<List<FoodItem>>>
         get() = _foodItemsLiveData
 
+    /**
+     * 被观察数据-食品列表项目
+     */
+    private var _foodItemLiveData = MutableLiveData<FoodResult<FoodItem>>()
     val foodItemLiveData: LiveData<FoodResult<FoodItem>>
         get() = _foodItemLiveData
 
+    /**
+     * 获取食品列表
+     * @param forceFetch
+     */
     @ExperimentalCoroutinesApi
     fun getFoodItems(forceFetch: Boolean) {
         viewModelScope.launch {
             usecase.getFoodItems(forceFetch)
-                    .onStart {
-                        _foodItemsLiveData.value = FoodResult.Loading
-                    }.catch {
-                        _foodItemsLiveData.value = FoodResult.Error(it)
-                    }.collect {
-                        _foodItemsLiveData.value = it
-                    }
+                .onStart {
+                    //加载中
+                    _foodItemsLiveData.value = FoodResult.Loading
+                }.catch {
+                    //请求异常
+                    _foodItemsLiveData.value = FoodResult.Error(it)
+                }.collect {
+                    //获取结果
+                    _foodItemsLiveData.value = it
+                }
         }
     }
 
+    /**
+     * 根据ID获取食品列表项
+     * @param id
+     */
     fun getFoodItem(id: Int) {
         viewModelScope.launch {
             usecase.getFoodItem(id)
-                    .onStart {
-                        _foodItemLiveData.value = FoodResult.Loading
-                    }.catch {
-                        _foodItemLiveData.value = FoodResult.Error(it)
-                    }.collect {
-                        _foodItemLiveData.value = it
-                    }
+                .onStart {
+                    //加载中
+                    _foodItemLiveData.value = FoodResult.Loading
+                }.catch {
+                    //请求异常
+                    _foodItemLiveData.value = FoodResult.Error(it)
+                }.collect {
+                    //获取结果
+                    _foodItemLiveData.value = it
+                }
         }
     }
 

@@ -19,12 +19,14 @@ object ScreenModule {
     @Provides
     @FragmentScoped
     fun provideAdapter(activity: Activity) =
-            SplashViewPager(imagesRes = listOf(
-                    R.drawable.frame1,
-                    R.drawable.frame2,
-                    R.drawable.frame3),
-                    manager = (activity as AppCompatActivity).supportFragmentManager
-            )
+        SplashViewPager(
+            imagesRes = listOf(
+                R.drawable.frame1,
+                R.drawable.frame2,
+                R.drawable.frame3
+            ),
+            manager = (activity as AppCompatActivity).supportFragmentManager
+        )
 
     @Provides
     @FragmentScoped

@@ -24,10 +24,17 @@ import foodapp.com.foodapp.ui.list.FoodViewModel
 import foodapp.com.foodapp.ui.splash.SplashViewPager
 import foodapp.com.foodapp.ui.views.DepthPageTransformer
 
+/**
+ * 食品详情页
+ */
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     private val viewModel: FoodViewModel by viewModels()
+
+    /**
+     * 获取传递的参数
+     */
     private val args: DetailFragmentArgs by navArgs()
 
     private var pixelDensity: Float = 0.toFloat()
@@ -52,8 +59,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         viewModel.foodItemLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is FoodResult.Error -> {
-                    Toast.makeText(requireContext(), "Error!",
-                            Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(), "Error!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 is FoodResult.Success -> {
                     onLoadFoodItem(it.data)
@@ -62,12 +71,17 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         })
 
         takeIf { id != -1 }?.apply {
+            //根据ID获取食品列表项
             viewModel.getFoodItem(args.foodID)
         }
 
         postponeEnterTransition()
     }
 
+    /**
+     * 加载食品项,为视图绑定数据
+     * @param foodItem 食品项数据
+     */
     private fun onLoadFoodItem(foodItem: FoodItem) {
 
         binding.foodImageView.transitionName = foodItem.votes.toString()
@@ -97,12 +111,21 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         binding.dishesViewPager.setPageTransformer(true, DepthPageTransformer())
 
         val fragmentManager = childFragmentManager
-        binding.dishesViewPager.adapter = SplashViewPager(imagesUrls = foodItem.foodImages,
-                manager = fragmentManager)
+        binding.dishesViewPager.adapter = SplashViewPager(
+            imagesUrls = foodItem.foodImages,
+            manager = fragmentManager
+        )
 
         binding.tabLayout.setupWithViewPager(binding.dishesViewPager, true)
     }
 
+    /**
+     * 为视图绑定ViewBinding
+     * @param inflater
+     * @param container
+     * @param bundle
+     * @return
+     */
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?, bundle: Bundle?) =
-            FragmentDetailBinding.inflate(inflater, container, false)
+        FragmentDetailBinding.inflate(inflater, container, false)
 }

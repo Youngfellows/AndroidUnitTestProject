@@ -43,8 +43,8 @@ object ClientModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val okHttpClient = Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
 
         //show logs if app is in Debug mode
         if (BuildConfig.DEBUG)

@@ -6,6 +6,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import foodapp.com.data.model.FoodItem
 
+/**
+ * DB数据库操作
+ */
 @Dao
 interface FoodDao {
 

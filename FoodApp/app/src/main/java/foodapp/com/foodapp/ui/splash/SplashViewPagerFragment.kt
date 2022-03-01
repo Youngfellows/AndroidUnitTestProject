@@ -13,13 +13,30 @@ import coil.transform.CircleCropTransformation
 import foodapp.com.foodapp.base.BaseFragment
 import foodapp.com.foodapp.databinding.FragmentHeroImageBinding
 
+/**
+ * 每一个具体的图片轮播页
+ */
 class SplashViewPagerFragment : BaseFragment<FragmentHeroImageBinding>() {
 
+    /**
+     * 伴生对象,静态方法和属性
+     */
     companion object {
+
         const val ARG_IMAGE_RES = "image_res"
+
         const val ARG_IMAGE_URL = "image_url"
 
-        fun newInstance(@DrawableRes imageRes: Int = -1, imageUrl: String = ""): SplashViewPagerFragment {
+        /**
+         * 静态方法
+         * @param imageRes 本地图片
+         * @param imageUrl 网络图片
+         * @return
+         */
+        fun newInstance(
+            @DrawableRes imageRes: Int = -1,
+            imageUrl: String = ""
+        ): SplashViewPagerFragment {
             val fragment = SplashViewPagerFragment()
             val bundle = Bundle()
             if (imageRes != -1) {
@@ -53,7 +70,10 @@ class SplashViewPagerFragment : BaseFragment<FragmentHeroImageBinding>() {
 
             view.setOnClickListener {
                 activity?.let {
-                    val p1 = androidx.core.util.Pair.create<View, String>(binding.heroImageView, imageUrl)
+                    val p1 = androidx.core.util.Pair.create<View, String>(
+                        binding.heroImageView,
+                        imageUrl
+                    )
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(it, p1)
                     //startActivity(DishDetailsActivity.newInstance(it, imageUrl), options.toBundle())
                 }
@@ -62,7 +82,15 @@ class SplashViewPagerFragment : BaseFragment<FragmentHeroImageBinding>() {
         }
     }
 
-    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?,
-                            bundle: Bundle?) =
-            FragmentHeroImageBinding.inflate(inflater, container, false)
+    /**
+     * 为Fragment页面绑定ViewBinding
+     * @param inflater
+     * @param container
+     * @param bundle
+     * @return
+     */
+    override fun getBinding(
+        inflater: LayoutInflater, container: ViewGroup?,
+        bundle: Bundle?
+    ) = FragmentHeroImageBinding.inflate(inflater, container, false)
 }

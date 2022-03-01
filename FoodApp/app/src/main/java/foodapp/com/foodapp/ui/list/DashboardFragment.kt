@@ -20,9 +20,15 @@ import foodapp.com.foodapp.base.BaseFragment
 import foodapp.com.foodapp.databinding.FragmentDashboardBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+/**
+ * 食品列表页面
+ */
 @AndroidEntryPoint
 class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
 
+    /**
+     * 食品列表数据加载的ViewModel
+     */
     private val viewModel: FoodViewModel by viewModels()
 
     private fun showLoading() {
@@ -40,19 +46,27 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
         binding.foodListRecyclerView.visibility = View.GONE
         binding.errorView.showEmptyView()
         val errorType = viewModel.parseError(throwable)
-        binding.errorView.setContents(errorType.icon,
-                errorType.title,
-                errorType.subtitle,
-                R.string.inv_try_again) {
+        binding.errorView.setContents(
+            errorType.icon,
+            errorType.title,
+            errorType.subtitle,
+            R.string.inv_try_again
+        ) {
+            //重新获取食品列表
             viewModel.getFoodItems(true)
         }
     }
 
+    /**
+     * 更新食品列表
+     * @param foodItems 食品列表
+     */
     private fun onLoadFoodItems(foodItems: List<FoodItem>) {
         binding.errorView.showEmptyView(false)
         binding.errorView.visibility = View.GONE
         binding.foodListRecyclerView.visibility = View.VISIBLE
 
+        //刷新食品列表
         if (binding.foodListRecyclerView.adapter != null) {
             (binding.foodListRecyclerView.adapter as FoodListAdapter).setFoodItems(foodItems)
         }
@@ -82,31 +96,45 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
             }
         })
 
+        //获取食品列表
         viewModel.getFoodItems(false)
 
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
+    /**
+     * 设置食品列表数据适配器
+     */
     private fun setupAdapter() {
         binding.foodListRecyclerView.adapter = FoodListAdapter(
-                listener = { foodItem: FoodItem,
-                             foodImageView: ImageView,
-                             heartImageView: ImageView ->
-                    val action = DashboardFragmentDirections.dashboardToDetail(foodItem.id)
-                    val extras: FragmentNavigator.Extras = FragmentNavigatorExtras(
-                            foodImageView to foodItem.votes.toString())
-                    findNavController().navigate(action, extras)
+            listener = { foodItem: FoodItem,
+                         foodImageView: ImageView,
+                         heartImageView: ImageView ->
 
-                    exitTransition = MaterialElevationScale(false).apply {
-                        duration = 300
-                    }
-                    reenterTransition = MaterialElevationScale(true).apply {
-                        duration = 300
-                    }
-                })
+                //页面跳转，传递参数
+                val action = DashboardFragmentDirections.dashboardToDetail(foodItem.id)
+                val extras: FragmentNavigator.Extras = FragmentNavigatorExtras(
+                    foodImageView to foodItem.votes.toString()
+                )
+                findNavController().navigate(action, extras)
+
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = 300
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = 300
+                }
+            })
     }
 
+    /**
+     * 为页面绑定ViewBindding
+     * @param inflater
+     * @param container
+     * @param bundle
+     * @return
+     */
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?, bundle: Bundle?) =
-            FragmentDashboardBinding.inflate(inflater, container, false)
+        FragmentDashboardBinding.inflate(inflater, container, false)
 }
