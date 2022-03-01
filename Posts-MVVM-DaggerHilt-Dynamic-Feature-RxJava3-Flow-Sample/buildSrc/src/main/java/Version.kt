@@ -1,5 +1,5 @@
 object PluginVersion {
-    const val KOTLIN_VERSION = "1.4.0"
+    const val KOTLIN_VERSION = "1.4.21"
     const val GRADLE_VERSION = "4.1.2"
 
     const val NAV_SAFE_ARGS_VERSION = "2.3.0"
@@ -81,7 +81,7 @@ object Version {
     const val RX_JAVA3_ANDROID_VERSION = "3.0.0"
 
     // Coroutines
-    const val COROUTINES_VERSION = "1.3.5"
+    const val COROUTINES_VERSION = "1.3.9"
 
     // Glide
     const val GLIDE_VERSION = "4.9.0"
@@ -122,7 +122,7 @@ object TestVersion {
     const val robolectricVersion = "4.3.1"
     const val rulesVersion = "1.0.1"
 
-    const val coroutinesTestVersion = "1.3.7"
+    const val coroutinesTestVersion = "1.3.9"
 
     // MockWebServer
     const val mockWebServerVersion = "4.8.1"
