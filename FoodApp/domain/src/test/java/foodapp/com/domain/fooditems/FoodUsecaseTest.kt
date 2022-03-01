@@ -30,21 +30,40 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 internal class FoodUsecaseTest : CoroutineTest {
 
+    /**
+     * 测试协程调度器
+     */
     override lateinit var dispatcher: TestCoroutineDispatcher
+
+    /**
+     * 测试协程范围
+     */
     override lateinit var testScope: TestCoroutineScope
 
+    /**
+     * 本地存储-模拟对象
+     */
     @MockK(relaxed = true)
     lateinit var localDataStore: LocalDataStore
 
+
+    /**
+     * 云端存储-模拟对象
+     */
     @MockK(relaxed = true)
     lateinit var remoteCloudDataStore: CloudDataStore
 
+    /**
+     * 获取数据的仓库
+     */
     private lateinit var repository: FoodRepository
 
     @BeforeAll
     fun setup() {
-        repository = FoodRepositoryImpl(localDataStore, remoteCloudDataStore,
-                TestDispatcherProviderImpl(dispatcher))
+        repository = FoodRepositoryImpl(
+            localDataStore, remoteCloudDataStore,
+            TestDispatcherProviderImpl(dispatcher)
+        )
     }
 
     @Test

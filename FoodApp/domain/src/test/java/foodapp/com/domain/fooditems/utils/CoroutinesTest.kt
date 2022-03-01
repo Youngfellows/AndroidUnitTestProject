@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.*
 interface CoroutineTest {
 
     var testScope: TestCoroutineScope
+
     var dispatcher: TestCoroutineDispatcher
 
     @After
@@ -24,9 +25,9 @@ interface CoroutineTest {
 
 @ExperimentalCoroutinesApi
 class TestCoroutineExtension : TestInstancePostProcessor,
-        BeforeAllCallback,
-        AfterEachCallback,
-        AfterAllCallback {
+    BeforeAllCallback,
+    AfterEachCallback,
+    AfterAllCallback {
 
     private val dispatcher = TestCoroutineDispatcher()
     private val testScope = TestCoroutineScope(dispatcher)
